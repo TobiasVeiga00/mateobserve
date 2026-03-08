@@ -1,0 +1,13 @@
+[project]
+name = "fastapi-demo"
+version = "0.1.0"
+description = "Example FastAPI app with MateObserve integration"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "mateobserve",
+]
+
+[tool.uv.sources]
+mateobserve = { path = "../../sdk", editable = true }

@@ -1,0 +1,20 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir uv
+
+COPY collector/pyproject.toml ./collector/
+COPY collector/__init__.py ./collector/
+RUN uv pip install --system --no-cache "fastapi>=0.104.0" "uvicorn[standard]>=0.24.0" \
+    "sqlalchemy[asyncio]>=2.0.0" "asyncpg>=0.29.0" "alembic>=1.13.0" \
+    "redis>=5.0.0" "pydantic>=2.0.0" "pydantic-settings>=2.0.0"
+
+COPY collector/ ./collector/
+
+RUN useradd -r -u 1001 -s /usr/sbin/nologin appuser
+USER appuser
+
+EXPOSE 8001
+
+CMD ["uvicorn", "collector.main:app", "--host", "0.0.0.0", "--port", "8001"]

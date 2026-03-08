@@ -1,0 +1,64 @@
+# MateObserve — Docker Compose Stack
+# Start everything: docker compose up
+# Dashboard: http://localhost:4000
+# Collector API: http://localhost:8001
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mateobserve"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ───────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Collector ───────────────────────────────────────────────────────────
+  collector:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.collector
+    environment:
+      MATEOBSERVE_DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      MATEOBSERVE_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      MATEOBSERVE_API_KEY: ${MATEOBSERVE_API_KEY:-}
+      MATEOBSERVE_CORS_ORIGINS: '["http://localhost:3000","http://localhost:4000","http://dashboard:4000"]'
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Dashboard ───────────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dashboard
+    environment:
+      COLLECTOR_URL: http://collector:8001
+      MATEOBSERVE_API_KEY: ${MATEOBSERVE_API_KEY:-}
+    ports:
+      - "4000:4000"
+    depends_on:
+      - collector
+
+volumes:
+  pgdata:
