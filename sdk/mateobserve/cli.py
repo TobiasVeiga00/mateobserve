@@ -35,17 +35,17 @@ def _ensure_stack_files() -> Path:
     data_dir = _get_data_dir()
     compose_dest = data_dir / "docker-compose.yml"
 
-    if not compose_dest.exists():
-        data_dir.mkdir(parents=True, exist_ok=True)
-        bundled = _bundled_compose()
-        if not bundled.exists():
-            print(
-                "Error: bundled docker-compose.yml not found. "
-                "Reinstall mateobserve: pip install --force-reinstall mateobserve",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        shutil.copy2(bundled, compose_dest)
+    # Always sync compose from the bundled package so upgrades take effect.
+    data_dir.mkdir(parents=True, exist_ok=True)
+    bundled = _bundled_compose()
+    if not bundled.exists():
+        print(
+            "Error: bundled docker-compose.yml not found. "
+            "Reinstall mateobserve: pip install --force-reinstall mateobserve",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    shutil.copy2(bundled, compose_dest)
 
     _ensure_env_file(compose_dest)
     return compose_dest
