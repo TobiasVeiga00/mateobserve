@@ -1,36 +1,36 @@
 /* ── MateObserve Dashboard — Global Styles ─────────────────────────────── */
 
 :root {
-  /* Mate-inspired earthy palette */
-  --mate-green: #3d6b4f;
-  --mate-green-light: #5a9670;
+  /* Premium Mate/Yerba Palette */
+  --mate-green: #4f7b58;
+  --mate-green-light: #70a980;
   --mate-green-dark: #2a4a37;
-  --mate-brown: #8b6f47;
-  --mate-brown-light: #c4a97d;
-  --mate-brown-dark: #5c4a2f;
-  --mate-cream: #f5f0e8;
-  --mate-cream-dark: #e8dfd1;
+  --mate-brown: #a18359;
+  --mate-brown-light: #d6bc94;
+  --mate-brown-dark: #634b32;
+  --mate-cream: #f4eee3;
+  --mate-cream-dark: #e5cdb0;
 
-  /* Semantic */
-  --bg-primary: #0f1410;
-  --bg-secondary: #171e19;
-  --bg-card: #1c251f;
-  --bg-card-hover: #232e26;
-  --border: #2a3a2e;
-  --border-accent: #3d6b4f44;
+  /* Semantic - Richer, deeper dark mode */
+  --bg-primary: #0a0d0b;
+  --bg-secondary: rgba(20, 26, 22, 0.8);
+  --bg-card: rgba(28, 37, 31, 0.6);
+  --bg-card-hover: rgba(40, 56, 44, 0.85);
+  --border: rgba(61, 107, 79, 0.25);
+  --border-accent: rgba(112, 169, 128, 0.6);
 
-  --text-primary: #e8e2d6;
-  --text-secondary: #9ca38f;
-  --text-muted: #5e6b58;
+  --text-primary: #f0ece3;
+  --text-secondary: #abb3a1;
+  --text-muted: #6b7a63;
 
-  --accent: #5a9670;
-  --accent-glow: #5a967033;
-  --error: #e05555;
-  --error-glow: #e0555533;
-  --warning: #d4a54a;
+  --accent: #70a980;
+  --accent-glow: rgba(112, 169, 128, 0.25);
+  --error: #e86363;
+  --error-glow: rgba(232, 99, 99, 0.25);
+  --warning: #eab758;
 
-  --radius: 10px;
-  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-lg: 20px;
 }
 
 *,
@@ -50,6 +50,8 @@ html {
 body {
   font-family: "DM Sans", system-ui, sans-serif;
   background: var(--bg-primary);
+  background: radial-gradient(circle at 80% -20%, #1a2a1f, var(--bg-primary) 60%);
+  background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
 }
@@ -149,17 +151,22 @@ body {
 
 .stat-card {
   background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.4rem 1.6rem;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card:hover {
+  background: var(--bg-card-hover);
   border-color: var(--border-accent);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px var(--accent-glow);
 }
 
 .stat-card::before {
@@ -229,9 +236,12 @@ body {
 
 .chart-panel {
   background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .chart-panel h3 {
@@ -247,9 +257,12 @@ body {
 
 .table-panel {
   background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .table-panel h3 {

@@ -9,29 +9,6 @@ permissions:
   packages: write
 
 jobs:
-  # ── Publish SDK to PyPI ──────────────────────────────────────────────────
-  pypi:
-    name: Publish to PyPI
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install build tools
-        run: pip install build twine
-
-      - name: Build package
-        run: cd sdk && python -m build
-
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: cd sdk && twine upload dist/*
-
   # ── Publish Docker images to GHCR ───────────────────────────────────────
   docker:
     name: Publish Docker images
@@ -43,12 +20,14 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_PAT }}
 
-      - name: Extract version from tag
-        id: version
-        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - name: Extract version and owner
+        id: meta
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          echo "owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: Build and push collector
         uses: docker/build-push-action@v6
@@ -57,8 +36,8 @@ jobs:
           file: docker/Dockerfile.collector
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/mateobserve-collector:latest
-            ghcr.io/${{ github.repository_owner }}/mateobserve-collector:${{ steps.version.outputs.version }}
+            ghcr.io/${{ steps.meta.outputs.owner }}/mateobserve-collector:latest
+            ghcr.io/${{ steps.meta.outputs.owner }}/mateobserve-collector:${{ steps.meta.outputs.version }}
 
       - name: Build and push dashboard
         uses: docker/build-push-action@v6
@@ -67,5 +46,24 @@ jobs:
           file: docker/Dockerfile.dashboard
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/mateobserve-dashboard:latest
-            ghcr.io/${{ github.repository_owner }}/mateobserve-dashboard:${{ steps.version.outputs.version }}
+            ghcr.io/${{ steps.meta.outputs.owner }}/mateobserve-dashboard:latest
+            ghcr.io/${{ steps.meta.outputs.owner }}/mateobserve-dashboard:${{ steps.meta.outputs.version }}
+
+  # ── Publish SDK to PyPI (disabled until v0.1.5) ────────────────────────
+  # pypi:
+  #   name: Publish to PyPI
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.12"
+  #     - name: Install build tools
+  #       run: pip install build twine
+  #     - name: Build package
+  #       run: cd sdk && python -m build
+  #     - name: Publish to PyPI
+  #       env:
+  #         TWINE_USERNAME: __token__
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+  #       run: cd sdk && twine upload dist/*

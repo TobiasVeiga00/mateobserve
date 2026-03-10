@@ -36,38 +36,47 @@ export function TrafficChart({ data }: Props) {
           <AreaChart data={formatted}>
             <defs>
               <linearGradient id="trafficGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#5a9670" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#5a9670" stopOpacity={0} />
+                <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.5} />
+                <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid stroke="#2a3a2e" strokeDasharray="3 3" />
+            <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="time"
-              stroke="#5e6b58"
+              stroke="var(--text-muted)"
               fontSize={11}
               fontFamily="JetBrains Mono"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
             />
             <YAxis
-              stroke="#5e6b58"
+              stroke="var(--text-muted)"
               fontSize={11}
               fontFamily="JetBrains Mono"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
             />
             <Tooltip
               contentStyle={{
-                background: "#1c251f",
-                border: "1px solid #2a3a2e",
-                borderRadius: "8px",
+                background: "var(--bg-card)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid var(--border)",
+                borderRadius: "12px",
                 fontFamily: "JetBrains Mono",
                 fontSize: "12px",
-                color: "#e8e2d6",
+                color: "var(--text-primary)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
               }}
             />
             <Area
               type="monotone"
               dataKey="requests"
-              stroke="#5a9670"
-              strokeWidth={2}
+              stroke="var(--accent)"
+              strokeWidth={3}
               fill="url(#trafficGrad)"
+              activeDot={{ r: 6, fill: "var(--accent)", stroke: "var(--bg-primary)", strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>

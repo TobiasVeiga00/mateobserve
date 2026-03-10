@@ -25,12 +25,13 @@ export async function GET(
 ) {
   const { path } = await params;
   const targetPath = "/" + path.join("/");
+  const backendPath = "/api/v1" + targetPath;
 
   if (!isAllowedPath(targetPath)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const url = new URL(targetPath, COLLECTOR_URL);
+  const url = new URL(backendPath, COLLECTOR_URL);
   request.nextUrl.searchParams.forEach((value: string, key: string) => {
     url.searchParams.set(key, value);
   });

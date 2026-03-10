@@ -95,7 +95,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 app.add_middleware(RateLimitMiddleware, requests_per_minute=settings.rate_limit_per_minute)
 
-app.include_router(router)
+app.include_router(router, prefix="/api/v1")
 
 
 @app.get("/health")

@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Internal agent workflows
+.agents/
 *.egg-info/
 dist/
 build/

@@ -36,34 +36,41 @@ export function ErrorChart({ data }: Props) {
       ) : (
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={formatted} layout="vertical">
-            <CartesianGrid stroke="#2a3a2e" strokeDasharray="3 3" />
+            <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" horizontal={false} />
             <XAxis
               type="number"
-              stroke="#5e6b58"
+              stroke="var(--text-muted)"
               fontSize={11}
               fontFamily="JetBrains Mono"
               unit="%"
+              tickLine={false}
+              axisLine={false}
             />
             <YAxis
               type="category"
               dataKey="name"
-              stroke="#5e6b58"
+              stroke="var(--text-muted)"
               fontSize={10}
               fontFamily="JetBrains Mono"
               width={150}
+              tickLine={false}
+              axisLine={false}
             />
             <Tooltip
               contentStyle={{
-                background: "#1c251f",
-                border: "1px solid #2a3a2e",
-                borderRadius: "8px",
+                background: "var(--bg-card)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid var(--border)",
+                borderRadius: "12px",
                 fontFamily: "JetBrains Mono",
                 fontSize: "12px",
-                color: "#e8e2d6",
+                color: "var(--text-primary)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
               }}
               formatter={(value: number) => [`${value}%`, "Error Rate"]}
+              cursor={{ fill: "var(--bg-secondary)" }}
             />
-            <Bar dataKey="error_rate" fill="#e05555" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="error_rate" fill="var(--error)" radius={[0, 6, 6, 0]} />
           </BarChart>
         </ResponsiveContainer>
       )}
