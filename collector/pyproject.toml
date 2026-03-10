@@ -1,6 +1,6 @@
 [project]
 name = "mateobserve-collector"
-version = "0.1.1"
+version = "0.1.2"
 description = "MateObserve metrics collector service 🧉"
 requires-python = ">=3.11"
 dependencies = [

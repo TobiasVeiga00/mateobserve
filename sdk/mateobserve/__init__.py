@@ -5,4 +5,4 @@ from mateobserve.client import MetricsClient
 from mateobserve.config import MateObserveConfig
 
 __all__ = ["ObserveMiddleware", "MetricsClient", "MateObserveConfig"]
-__version__ = "0.1.1"
+__version__ = "0.1.2"

@@ -13,10 +13,10 @@
 
   /* Semantic - Richer, deeper dark mode */
   --bg-primary: #0a0d0b;
-  --bg-secondary: rgba(20, 26, 22, 0.8);
-  --bg-card: rgba(28, 37, 31, 0.6);
-  --bg-card-hover: rgba(40, 56, 44, 0.85);
-  --border: rgba(61, 107, 79, 0.25);
+  --bg-secondary: rgba(20, 26, 22, 0.96);
+  --bg-card: rgba(28, 37, 31, 0.90);
+  --bg-card-hover: rgba(40, 56, 44, 0.97);
+  --border: rgba(61, 107, 79, 0.42);
   --border-accent: rgba(112, 169, 128, 0.6);
 
   --text-primary: #f0ece3;

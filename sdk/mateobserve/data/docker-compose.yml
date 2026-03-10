@@ -53,6 +53,7 @@ services:
   dashboard:
     image: ghcr.io/tobiasveiga00/mateobserve-dashboard:latest
     environment:
+      COLLECTOR_URL: http://collector:8001
       NEXT_PUBLIC_COLLECTOR_URL: http://localhost:8001
     ports:
       - "4000:4000"
